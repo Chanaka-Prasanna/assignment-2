@@ -1,11 +1,10 @@
-# infra/json_repo.py
 import json, os, tempfile
 from typing import List
 from datetime import date
 from domain.models import Task, Priority, Status
 
 class JSONTaskRepository:
-    def __init__(self, path: str = "tasks.json"):
+    def __init__(self, path: str = "../data/tasks.json"):
         self.path = path
 
     def load(self) -> List[Task]:

@@ -1,7 +1,7 @@
-from typing import List, Optional
+from typing import List
 from uuid import uuid4
 from datetime import date
-from domain.models import Task, Priority, Status
+from domain.models import Task, Priority
 from domain.errors import ValidationError, NotFoundError
 
 class TaskService:
