@@ -7,7 +7,7 @@ try:
     COLOR_ENABLED = True
 except Exception:
     COLOR_ENABLED = False
-    class _Dummy:  # minimal stand-in
+    class _Dummy: 
         RESET_ALL = ""
     class _Fore(_Dummy):
         CYAN=GREEN=YELLOW=MAGENTA=BLUE=WHITE=RED=""
@@ -32,20 +32,23 @@ def banner_line(char: str, width: int) -> str:
 def center_line(text: str, width: int) -> str:
     return text.center(width)
 
-def print_banner(subtext: str = ""):
-    cols = max(60, shutil.get_terminal_size((80, 20)).columns)  # ensure minimum width
+def print_banner(subtext: str = "",name: str = "there"):
+    cols = max(60, shutil.get_terminal_size((80, 20)).columns) 
     title = f" {APP_NAME} "
-    greet = f"{greeting()}! {subtext}".strip()
+    greet = f"{greeting()} {name}! {subtext}".strip()
 
     top    = "╔" + "═"*(cols-2) + "╗"
     bottom = "╚" + "═"*(cols-2) + "╝"
 
+    # Calculate inner width (total width minus 2 border characters)
+    inner_width = cols - 2
+
     # Title styling
-    title_str = center_line(title, cols-2)
+    title_str = title.center(inner_width)
     if COLOR_ENABLED:
         title_str = Style.BRIGHT + Fore.CYAN + title_str + Style.RESET_ALL
 
-    greet_str = center_line(greet, cols-2)
+    greet_str = greet.center(inner_width)
     if COLOR_ENABLED:
         greet_str = Fore.YELLOW + greet_str + Style.RESET_ALL
 
@@ -60,12 +63,13 @@ def print_menu_header():
     if COLOR_ENABLED:
         line = Fore.BLUE + line + Style.RESET_ALL
     print("\n" + line)
-    m = "1) Add  2) List  3) View  4) Update  5) Delete  6) Sort  0) Quit"
+    m = "1) Add  2) List  3) View  4) Update  5) Delete  6) Sort 7) Change name  0) Quit"
     print(center_line(m, cols))
     print(line)
 
-def render_home(svc):
+def render_home(svc,user_name=None):
+    name = user_name or "there"
     clear_screen()
     count = len(svc.list())
-    print_banner(subtext=f"Tasks loaded: {count}")
+    print_banner(subtext=f"Tasks loaded: {count}",name=name)
     print_menu_header()
