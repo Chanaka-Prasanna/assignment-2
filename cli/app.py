@@ -3,7 +3,7 @@ from domain.errors import ValidationError, NotFoundError
 from services.task_service import TaskService
 from infra.json_repository import JSONTaskRepository
 from utils.create_mode_helpers import ask_new_text,ask_new_date,ask_new_priority
-from utils.edit_mode_helpers import ask_edit_text,ask_edit_date,ask_edit_priority
+from utils.edit_mode_helpers import ask_edit_text,ask_edit_date,ask_edit_priority,ask_edit_status
 
 T = TypeVar("T")
 
@@ -27,7 +27,7 @@ def main():
 
             elif choice == "2":
                 for t in svc.list():
-                    print(f"{t.id[:8]} | {t.title} | due {t.due_date} | {t.priority.value} | {t.status.value}")
+                    print(f"{t.id} | {t.title} | due {t.due_date} | {t.priority.value} | {t.status.value}")
 
             elif choice == "3":
                 tid = input("Task ID: ")
@@ -35,7 +35,6 @@ def main():
                 print(f"\n{t.id}\nTitle: {t.title}\nDesc: {t.description}\nDue: {t.due_date}\nPriority: {t.priority.value}\nStatus: {t.status.value}")
 
             elif choice == "4":
-                # --- UPDATE (validated edit flow) ---
                 tid = input("Task ID: ")
                 t = svc.get(tid)
 
@@ -43,11 +42,10 @@ def main():
 
                 desc_preview = (t.description if len(t.description) <= 40 else t.description[:40] + "…")
                 new_desc  = ask_edit_text(f"Description (current: {desc_preview})", t.description)
-
                 new_due   = ask_edit_date("Due", t.due_date)
                 new_pr    = ask_edit_priority(t.priority)
-
-                svc.update(tid, title=new_title, description=new_desc, due_date=new_due, priority=new_pr)
+                new_status = ask_edit_status(t.status)
+                svc.update(tid, title=new_title, description=new_desc, due_date=new_due, priority=new_pr,status=new_status)
                 print("Updated ✓")
 
             elif choice == "5":

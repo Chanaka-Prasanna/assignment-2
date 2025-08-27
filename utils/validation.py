@@ -1,6 +1,6 @@
 import re
 from datetime import date
-from domain.models import Priority
+from domain.models import Priority,Status
 from domain.errors import ValidationError
 
 def choose_priority(s: str) -> Priority:
@@ -9,6 +9,13 @@ def choose_priority(s: str) -> Priority:
     s = mapping.get(s, s)
     try: return Priority(s)
     except ValueError: raise ValidationError("Priority must be low|medium|high.")
+
+def choose_status(raw: str) -> Status:
+    raw = raw.strip().lower()
+    for s in Status:
+        if raw == s.value:
+            return s
+    raise ValidationError("Status must be one of: todo, doing, done")
 
 
 def parse_date(s: str) -> date:

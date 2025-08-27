@@ -1,7 +1,8 @@
 from datetime import date
+from domain.models import Status
 from typing import Callable, TypeVar
 from domain.errors import ValidationError
-from utils.validation import choose_priority, parse_date
+from utils.validation import choose_priority,choose_status,parse_date
 from utils.input_helpers import non_empty_factory
 
 T = TypeVar("T")
@@ -29,5 +30,16 @@ def ask_edit_priority(current) -> "Priority":
             return current
         try:
             return choose_priority(raw)
+        except ValidationError as e:
+            print(f"Error: {e}")
+
+
+def ask_edit_status(current) -> "Status":
+    while True:
+        raw = input(f"Status [{current.value}] (todo|doing|done): ").strip()
+        if raw == "":
+            return current
+        try:
+            return choose_status(raw)
         except ValidationError as e:
             print(f"Error: {e}")
