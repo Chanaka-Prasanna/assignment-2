@@ -1,7 +1,7 @@
 from datetime import date
 from domain.models import Status
 from typing import Callable, TypeVar
-from domain.errors import ValidationError
+from domain.errors import ValidationError, QuitOperationError
 from utils.validation import choose_priority,choose_status,parse_date
 from utils.input_helpers import non_empty_factory
 
@@ -10,6 +10,8 @@ T = TypeVar("T")
 def ask_edit(label: str, current, transform: Callable[[str], T]) -> T:
     while True:
         raw = input(f"{label} [{current}]: ")
+        if raw.strip().lower() == 'q':
+            raise QuitOperationError("Operation cancelled by user")
         if raw.strip() == "":
             return current
         try:
@@ -26,6 +28,8 @@ def ask_edit_date(label: str, current: date) -> date:
 def ask_edit_priority(current) -> "Priority":
     while True:
         raw = input(f"Priority [{current.value}] (low|medium|high or l/m/h): ").strip()
+        if raw.lower() == 'q':
+            raise QuitOperationError("Operation cancelled by user")
         if raw == "":
             return current
         try:
@@ -37,6 +41,8 @@ def ask_edit_priority(current) -> "Priority":
 def ask_edit_status(current) -> "Status":
     while True:
         raw = input(f"Status [{current.value}] (todo|doing|done): ").strip()
+        if raw.lower() == 'q':
+            raise QuitOperationError("Operation cancelled by user")
         if raw == "":
             return current
         try:

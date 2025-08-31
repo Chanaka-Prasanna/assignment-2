@@ -3,7 +3,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from typing import TypeVar
-from domain.errors import ValidationError, NotFoundError
+from domain.errors import ValidationError, NotFoundError, QuitOperationError
 from services.task_service import TaskService
 from infra.json_repository import JSONTaskRepository
 from utils.settings import Settings
@@ -25,10 +25,11 @@ def main():
     render_home(svc,settings.user_name)
 
     while True:
-        choice = input("> ").strip()
+        choice = input("What would you like to do? (Choose 0-7): ").strip()
         try:
             if choice == "1":
                 # --- ADD (using your helpers) ---
+                print("Press 'q' at any time to cancel this operation.")
                 title = ask_new_text("Title")
                 desc = ask_new_text("Description")
                 due = ask_new_date("Due date")
@@ -44,7 +45,12 @@ def main():
                 print_menu_header()
 
             elif choice == "3":
+                print("Press 'q' to cancel.")
                 tid = input("Task ID: ")
+                if tid.strip().lower() == 'q':
+                    print("Operation cancelled.")
+                    print_menu_header()
+                    continue
                 t = svc.get(tid)
                 print(
                     f"\n{t.id}\nTitle: {t.title}\nDesc: {t.description}\nDue: {t.due_date}\n"
@@ -53,7 +59,12 @@ def main():
                 print_menu_header()
 
             elif choice == "4":
+                print("Press 'q' at any time to cancel this operation.")
                 tid = input("Task ID: ")
+                if tid.strip().lower() == 'q':
+                    print("Operation cancelled.")
+                    print_menu_header()
+                    continue
                 t = svc.get(tid)
 
                 new_title = ask_edit_text("Title", t.title)
@@ -76,26 +87,39 @@ def main():
                 print_menu_header()
 
             elif choice == "5":
+                print("Press 'q' to cancel.")
                 tid = input("Task ID: ")
+                if tid.strip().lower() == 'q':
+                    print("Operation cancelled.")
+                    print_menu_header()
+                    continue
                 svc.delete(tid)
                 print("Deleted ✓")
                 print_menu_header()
 
             elif choice == "6":
+                print("Tasks sorted by due date:")
                 for t in svc.sort_by_due_date():
                     print(f"{t.due_date} | {t.title} ({t.priority.value})")
                 print_menu_header()
 
             elif choice == "7":
+                print("Press 'q' to cancel.")
                 current_name = settings.user_name or "Friend"
                 print(f"Current name: {current_name}")
                 new_name = input("Enter new name (or press Enter to keep current): ").strip()
+                if new_name.lower() == 'q':
+                    print("Operation cancelled.")
+                    print_menu_header()
+                    continue
                 if new_name:
                     settings.user_name = new_name
                     print(f"Name changed to: {new_name} ✓")
+                    # Re-render the header with the new name
+                    render_home(svc, settings.user_name)
                 else:
                     print("Name unchanged.")
-                print_menu_header()
+                    print_menu_header()
 
             elif choice == "0":
                 print("Bye!")
@@ -105,6 +129,9 @@ def main():
                 print("Invalid option. Try 0–7.")
                 print_menu_header()
 
+        except QuitOperationError:
+            print("Operation cancelled.")
+            print_menu_header()
         except (ValidationError, NotFoundError) as e:
             print(f"Error: {e}")
             print_menu_header()

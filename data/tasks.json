@@ -25,14 +25,5 @@
     "priority": "high",
     "status": "todo",
     "created_on": "2025-08-27"
-  },
-  {
-    "id": "a6fabb1e-1f17-4ff4-aace-7bdbb59fd024",
-    "title": "Test",
-    "description": "Test descriptionn",
-    "due_date": "2025-08-31",
-    "priority": "medium",
-    "status": "done",
-    "created_on": "2025-08-31"
   }
 ]

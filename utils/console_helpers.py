@@ -71,5 +71,12 @@ def render_home(svc,user_name=None):
     name = user_name or "there"
     clear_screen()
     count = len(svc.list())
-    print_banner(subtext=f"Tasks loaded: {count}",name=name)
+    
+    # Create the task count text with color
+    if COLOR_ENABLED:
+        task_text = f"{Fore.GREEN}{count} tasks loaded{Style.RESET_ALL}"
+    else:
+        task_text = f"{count} tasks loaded"
+    
+    print_banner(subtext=task_text,name=name)
     print_menu_header()

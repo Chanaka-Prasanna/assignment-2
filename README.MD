@@ -27,40 +27,54 @@ pip install colorama
 
 # run from the project root (where cli/, domain/, ... exist)
 python -m cli.app
+
+# Or navigate to cli folder in cli and run:
+python app.py
 ```
 
 ## Features
 
 - Add, list, view, update, and delete tasks
+- Configure user name with persistent greeting
 - Sort tasks by due date (soonest first)
 - Menu-driven CLI with validation and friendly errors
 - JSON persistence on disk
 - Input validation: non-empty title/description, YYYY-MM-DD dates, no past due dates
+- **Quit operations**: Press 'q' at any time to cancel current operation
+- **Colorful UI**: Enhanced terminal interface with colors (requires colorama)
+- **Task counter**: Shows number of loaded tasks in the header
 
 ## Usage
 
-You’ll see a menu and can type an option number. Example session:
+You'll see a colorful menu-driven interface. Example session:
 
 ```text
-============================
- TaskMate Task Tracker
-============================
-Hi, Friend! What would you like to do?
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                           TaskMate Task Tracker                             ║
+║                    Good afternoon Chanaka! 3 tasks loaded                   ║
+╚══════════════════════════════════════════════════════════════════════════════╝
 
-[1] Add  [2] List  [3] View  [4] Update  [5] Delete  [6] Sort  [7] Name  [0] Quit
-> 1
+────────────────────────────────────────────────────────────────────────────────
+                1) Add  2) List  3) View  4) Update  5) Delete  6) Sort 7) Change name  0) Quit
+────────────────────────────────────────────────────────────────────────────────
+What would you like to do? (Choose 0-7): 1
+Press 'q' at any time to cancel this operation.
 Title: Plan sprint
 Description: Prepare sprint backlog
 Due date (YYYY-MM-DD): 2025-09-05
-Priority [low|medium|high] (default: medium): high
+Priority [low(l) | medium(m) | high(h)] (default=medium): high
 Created 6b3a... ✓
 
-[1] Add  [2] List  [3] View  [4] Update  [5] Delete  [6] Sort  [7] Name  [0] Quit
-> 2
+────────────────────────────────────────────────────────────────────────────────
+                1) Add  2) List  3) View  4) Update  5) Delete  6) Sort 7) Change name  0) Quit
+────────────────────────────────────────────────────────────────────────────────
+What would you like to do? (Choose 0-7): 2
 6b3a... | Plan sprint | due 2025-09-05 | high | todo
 
-[1] Add  [2] List  [3] View  [4] Update  [5] Delete  [6] Sort  [7] Name  [0] Quit
-> 0
+────────────────────────────────────────────────────────────────────────────────
+                1) Add  2) List  3) View  4) Update  5) Delete  6) Sort 7) Change name  0) Quit
+────────────────────────────────────────────────────────────────────────────────
+What would you like to do? (Choose 0-7): 0
 Bye!
 ```
 
@@ -72,8 +86,10 @@ Commands at a glance
 - 4 Update: press Enter to keep current values or provide new ones
 - 5 Delete: enter a Task ID to remove it
 - 6 Sort: prints tasks ordered by due date
-- 7 Name: change the saved greeting name
+- 7 Change name: change the saved greeting name
 - 0 Quit: exit the app
+
+**Tip**: Press 'q' at any time during input operations to cancel and return to the main menu.
 
 ## Data and configuration
 
