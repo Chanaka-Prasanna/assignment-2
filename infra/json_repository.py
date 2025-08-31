@@ -4,8 +4,15 @@ from datetime import date
 from domain.models import Task, Priority, Status
 
 class JSONTaskRepository:
-    def __init__(self, path: str = "../data/tasks.json"):
-        self.path = path
+    def __init__(self, path: str = None):
+        if path is None:
+            # Get the directory where this file is located
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            # Go up one level to the project root, then into data directory
+            project_root = os.path.dirname(current_dir)
+            self.path = os.path.join(project_root, "data", "tasks.json")
+        else:
+            self.path = path
 
     def load(self) -> List[Task]:
         if not os.path.exists(self.path):
