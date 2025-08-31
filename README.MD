@@ -58,6 +58,8 @@ TaskMate Task Tracker is a comprehensive command-line task management applicatio
 
 1. **Clone the Repository**
 
+   Repository link: https://github.com/Chanaka-Prasanna/assignment-2
+
    ```bash
    git clone https://github.com/Chanaka-Prasanna/assignment-2.git
    ```
